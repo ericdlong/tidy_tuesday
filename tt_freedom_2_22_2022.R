@@ -5,6 +5,7 @@
 
 library(tidytuesdayR)
 library(tidyverse)
+library(psych)
 
 #####Read in data, code taken from https://github.com/rfordatascience/tidytuesday/tree/master/data/2022/2022-02-22
 
@@ -18,3 +19,5 @@ library(tidyverse)
 
 tuesdata <- tidytuesdayR::tt_load('2022-02-22')
 freedom <- tuesdata$freedom
+
+describe(freedom)
