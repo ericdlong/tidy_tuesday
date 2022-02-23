@@ -1,3 +1,3 @@
 # tidy_tuesday
-Repo for Tidy Tuesday Exercises
-  https://github.com/rfordatascience/tidytuesday
+Repo for Tidy Tuesday Exercises <br />
+https://github.com/rfordatascience/tidytuesday
