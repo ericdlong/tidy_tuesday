@@ -23,3 +23,21 @@ ggplot(data = mpg)
 str(mpg)
 dim(mpg)
 #234 rows, 11 columns (variables)
+
+#help page
+?mpg
+
+#scatterplot of hwy vs. cyl
+ggplot(data = mpg) + geom_point(mapping = aes(x = cyl, y = hwy))
+
+#add an aesthetic
+ggplot(data = mpg) + geom_point(mapping = aes(x = displ, y = hwy, color = class))
+#can also use shape, alpha (this is transparency), or size aesthetics
+
+
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy), color = "blue")
+
+#map a continuous variable to color, size, shape
+ggplot(data = mpg) + geom_point(mapping = aes(x = displ, y = hwy, color = cty, size = cty))
+#becomes a gradient
