@@ -395,6 +395,7 @@ ggplot(data = diamonds) +
 
 ########## DATA TRANSFORMATION ##########
 
+#####DPLYR#####
 #this section will go over data manipulation - dplyr
 
 library(nycflights13)
@@ -411,6 +412,7 @@ view(flights)
 
 #using the flights data frame
 
+#default (comma separted filters) use AND
 
 #gets all flights from 1/1
 filter(flights, month==1, day==1)
@@ -446,5 +448,71 @@ is.na(x)
 #with an arrival delay of two or more hours
 filter(flights, flights$arr_delay >= 120)
 #that flew to Houston (IAH or HOU)
-filter(flights, dest == "IAH" | dest == "HOU")
-#were operated by united, american, or delta
+view(filter(flights, dest == "IAH" | dest == "HOU"))
+#note - can use view to output to a new tab if the output is too big for terminal
+#were operated by united (UA), american (AA), or delta (DL)
+filter(flights, carrier == 'UA' | carrier == 'AA' | carrier == 'DL')
+#departed in summer (July, August, September)
+filter(flights, month == 7 | month == 8 | month == 9)
+#better:
+filter(flights, month %in% 7:9)
+#or
+filter(flights, month >= 7, month <=9)
+#arrived more than two hours late, but didn't leave late
+filter(flights, arr_delay > 120 & dep_delay <= 0)
+#that were delayed by at least an hour but made up over 30 min in flight
+filter(flights, dep_delay >= 60, dep_delay - arr_delay > 30)
+#departed between 6am and midnight
+#first, how is midnight represented?
+summary(flights$dep_time)
+#min = 1, max = 2400
+filter(flights, dep_time <= 600 | dep_time == 2400)
+
+#use the between helper
+filter(flights, between(month, 7, 9))
+#this is the same as the above "departed in summer" examples
+
+#find flights missing dep_time
+filter(flights, is.na(dep_time))
+summary(flights$dep_time)
+
+#find other missing values
+summary(flights)
+#NAs mean they are likely cancelled flights
+#NAs in air_time, arr_delay, arr_time, dep_delay, dep_time
+
+#evaluate the following NA statements and explain
+NA ^ 0
+#this is == 1, x ^ 0 is always 1
+NA | TRUE
+#this is TRUE, x OR TRUE is always TRUE
+FALSE & NA
+#this is FALSE, x AND FALSE is always FALSE
+NA * 0
+#this is NA, the reason is because x could be infinity or -infinity
+Inf * 0 # == NaN
+-Inf * 0 # == NaN
+
+#####ARRANGE#####
+
+#this is similar to filter, except it changes the order of rows
+
+arrange(flights, year, month, day)
+
+#desc for descending order
+arrange(flights, desc(dep_delay))
+
+#missing (NA) values are always sorted at the end
+#example
+df<-tibble(x=c(5,2,NA))
+df
+arrange(df, x)
+arrange(df, desc(x))
+rm(df) #remove the df object
+
+#use arrange to put NA values at the start instead of the end
+view(arrange(flights, desc(is.na(dep_delay))))
+#note - the above will only put the NA values at the top but not sort the others
+#use this:
+view(arrange(flights, desc(is.na(dep_delay)), dep_delay))
+        
